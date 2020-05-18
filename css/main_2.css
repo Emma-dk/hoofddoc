@@ -1,0 +1,34 @@
+body {
+  padding: 90px;
+}
+p {
+  font-size: 24pt;
+  font-family: "hack";
+  text-align: center;
+}
+
+.title {
+  font-size: 54pt;
+  font-family: "hack";
+  text-align: center;
+}
+
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24pt;
+  font-family: "hack";
+  text-align: center;
+  padding: 20px;
+}
+
+.image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 100px;
+}
+img.image {
+  width: 100em;
+}
