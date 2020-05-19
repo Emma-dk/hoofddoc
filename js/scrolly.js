@@ -34,15 +34,22 @@ const een = function (p) {
   let x = 0;
   let y = 0;
   let bolletjes = [];
+  let diabeet_midden;
 
   p.preload = function () {};
 
   p.setup = function () {
     p.createCanvas(window.innerWidth, window.innerHeight);
-    for (let i = 0; i < 7000; i++) {
+    diabeet_midden = p.createVector(p.width / 2, p.height / 2);
+
+    for (let i = 0; i < 5000; i++) {
       const bol = {
         x: p.random(20, p.width - 20),
         y: p.random(20, p.height - 20),
+        pos: p.createVector(
+          p.random(20, p.width - 20),
+          p.random(20, p.height - 20)
+        ),
         color: "white",
         size: 20,
         stroke: 0,
@@ -50,16 +57,17 @@ const een = function (p) {
         visible: true,
         growth: 0,
         smaller: 0,
+        diabetes: false,
       };
       bolletjes.push(bol);
     }
+    bolletjes.sort(
+      (a, b) => a.pos.dist(diabeet_midden) - b.pos.dist(diabeet_midden)
+    );
+    bolletjes.slice(0, 1000 / 0.5).forEach((bol) => (bol.diabetes = true));
   };
 
   p.stepEnter = function (stepName) {
-    const drie = p.createVector(p.width / 3, p.height / 2);
-    const twee = p.createVector(p.width / 1.5, p.height / 2);
-    const een = p.createVector(p.width / 2, p.height / 1.5);
-
     if (stepName === "start") {
       for (const bol of bolletjes) {
         bol.size = 20;
@@ -67,6 +75,11 @@ const een = function (p) {
         bol.color = "white";
         bol.visible = true;
         bol.growth = 0;
+        if (bol.diabetes) {
+          bol.color = "green";
+        } else {
+          bol.color = "white";
+        }
       }
     } else if (stepName === "total") {
       for (const bol of bolletjes) {
@@ -151,12 +164,13 @@ const een = function (p) {
   p.draw = function () {
     p.background(255);
     p.fill(255);
+    //.slice(0, 100) achter bolletjes --> deel
     for (const bol of bolletjes) {
       if (bol.visible) {
         p.strokeWeight(bol.strokeWeight);
         p.stroke(bol.stroke);
         p.fill(bol.color);
-        p.ellipse(bol.x, bol.y, bol.size, bol.size);
+        p.ellipse(bol.pos.x, bol.pos.y, bol.size, bol.size);
       }
       bol.size = bol.size + bol.growth;
       // }
